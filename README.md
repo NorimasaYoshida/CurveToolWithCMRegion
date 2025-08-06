@@ -4,11 +4,10 @@ Cubic Bezier curve tool with curvature monotonocity regions
 This repository contains prototype code for a curve tool 
 
 
-<span style="font-size: 48px;">Lincence</span>
-
+# Licence
 The code in this repository i licenced under ther terms of Apache-2 license.
 
-Contributions
+# Contributions
 Contributioons are welcome.
 
 [Norimasa Yoshida](https://sites.google.com/view/yoshida-lab-citnu/english/profile-e)
