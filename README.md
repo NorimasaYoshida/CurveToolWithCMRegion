@@ -4,7 +4,7 @@ Cubic Bezier curve tool with curvature monotonocity regions
 This repository contains prototype code for a curve tool 
 
 
-<span style="font-size: 32;">テキスト</span>
+<span style="font-size: 48px;">Lincence</span>
 
 The code in this repository i licenced under ther terms of Apache-2 license.
 
