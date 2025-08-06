@@ -1,0 +1,254 @@
+<!--- Copyright 2025 Norimasa Yoshida -->
+<html>
+<head>
+ <title>Bezier curve tool</title>
+</head>
+<body>
+    <H2>Bezier curve tool with curvature monotonicity regions</H2>
+    <button onclick="ClearButton()">Clear</button>
+    <button onclick="DefaultViewButton()">Default view</button>
+    <input type="checkbox" id="ControlPolygonCheckBox" checked>
+    <label for="ControlPolygonCheckBox">ControlPolygon</label>
+    <input type="checkbox" id="CMRegionCheckBox" checked>
+    <label for="CMRegionCheckBox">C.M.Region</label>
+    <BR>
+    <input type="number" id="windowSize" placeholder="windowSize" value="600">
+    <button onclick="ResizeWindow()">Resize</button>
+    <input type="checkbox" id="CombCheckBox">
+    <label for="CombCheckBox">Comb</label>
+    <input type ="number" id="combScale" step="0.01" placeholder="combScale", value="0.05">
+    <BR>
+    <BR>
+    <canvas id="glCanvas" width="600" height="600"></canvas>
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+uniform mat4 modelview; 
+uniform mat4 projection;
+in vec2 pos;
+void main() {
+    gl_PointSize = 8.0;
+    //gl_Position = vec4(pos, 0., 1.);
+    vec4 position = vec4(pos.x, pos.y, 0., 1.);
+    gl_Position = projection * modelview * position;
+}
+</script>
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision mediump float;
+uniform vec4 fcolor;
+out vec4 fragColor;
+void main() {
+    fragColor = fcolor;
+}
+</script>
+<script id="vertex-shader2" type="x-shader/x-vertex">
+#version 300 es
+layout (location = 0) in vec4 position;
+uniform mat4 modelview; 
+uniform mat4 projection;
+out vec2 Pscrn; // screen coordinates of P3
+void main(void)
+{
+    Pscrn = position.xy;
+
+    gl_Position = projection * modelview * position;
+}
+</script>
+<script id="fragment-shader2" type="x-shader/x-fragment">
+    #version 300 es
+    precision mediump float;
+
+    const int ptNum = 4;
+    uniform vec2 PT[ptNum];
+    uniform vec2 PT2[ptNum];
+    uniform int movingPT;
+    const int inflectionP = 0;
+    uniform int endRegP;
+    const int maxDepth = 10;
+    out vec4 fragment;
+    in vec2 Pscrn; // screen coordinates of P3
+    
+    const int MaximumDepth = 10;
+    
+    int CheckMonotonicity(float xi[6]) {
+        if ( xi[0] * xi[5] < 0. ) return 2; // not monotone
+        if ( xi[0] > 0. && xi[1] > 0. && xi[2] > 0.
+             && xi[3] > 0. && xi[4] > 0. && xi[5] > 0. ) return 1;  // increasing
+        if ( xi[0] < 0. && xi[1] < 0. && xi[2] < 0.
+             && xi[3] < 0. && xi[4] < 0. && xi[5] < 0. ) return -1;  // decreasing
+        return 0;   // not sure
+    }
+    
+    int LambdaTstack(float xi[6]) {
+        float d0[MaximumDepth], d1[MaximumDepth], d2[MaximumDepth], d3[MaximumDepth], d4[MaximumDepth], d5[MaximumDepth];
+        int d6[MaximumDepth];
+        float dd[6];
+        int posi = 0;
+        int nega = 0;
+        d0[0] = xi[0];
+        d1[0] = xi[1];
+        d2[0] = xi[2];
+        d3[0] = xi[3];
+        d4[0] = xi[4];
+        d5[0] = xi[5];
+        d6[0] = 0;
+        int count = 1;
+        while(count != 0) {
+            dd[0] = d0[count-1];
+            dd[1] = d1[count-1];
+            dd[2] = d2[count-1];
+            dd[3] = d3[count-1];
+            dd[4] = d4[count-1];
+            dd[5] = d5[count-1];
+            int depth = d6[count-1];
+            int r0 = CheckMonotonicity(dd);
+            if(r0 == 2) return 0;
+            if(r0 == 0) {
+                if ( (depth + 1) >= maxDepth ) return 0; // not monotnous
+    
+                float t = 0.5;
+                float d_0[6], d_1[6], d_2[6], d_3[6], d_4[6], d_5[6];
+                d_0[0] = dd[0];
+                d_1[0] = dd[1];
+                d_2[0] = dd[2];
+                d_3[0] = dd[3];
+                d_4[0] = dd[4];
+                d_5[0] = dd[5];
+                for(int i = 1; i < 6; i++) {
+                    d_0[i] = d_0[i-1] * (1. - t) + d_1[i-1] * t;
+                    if(i <= 4) d_1[i] = d_1[i-1] * (1. - t) + d_2[i-1] * t;
+                    if(i <= 3) d_2[i] = d_2[i-1] * (1. - t) + d_3[i-1] * t;
+                    if(i <= 2) d_3[i] = d_3[i-1] * (1. - t) + d_4[i-1] * t;
+                    if(i <= 1) d_4[i] = d_4[i-1] * (1. - t) + d_5[i-1] * t;
+                }
+    
+                d0[count-1] = d_0[0];
+                d1[count-1] = d_0[1];
+                d2[count-1] = d_0[2];
+                d3[count-1] = d_0[3];
+                d4[count-1] = d_0[4];
+                d5[count-1] = d_0[5];
+                d6[count-1] = depth + 1;
+    
+                d0[count] = d_0[5];
+                d1[count] = d_1[4];
+                d2[count] = d_2[3];
+                d3[count] = d_3[2];
+                d4[count] = d_4[1];
+                d5[count] = d_5[0];
+                d6[count] = depth + 1;
+    
+                count++;
+            }
+            else {
+                count--;
+                if( r0 == 1 ) posi++;
+                else if( r0 == -1 ) nega++;
+                if ( posi > 0 && nega > 0 ) return 0; // not monotonous
+            }
+        }
+    
+        if ( posi > 0 ) return 1;       // increasing
+        if ( nega > 0 ) return -1;      // decreasing
+        return 0; // not monotonous
+    }
+    
+    int ccm(vec2 P[4], int mP, int moveAccordingly) {
+        vec2 pt[4];
+        for(int i = 0; i < 4; i++) {
+            pt[i] = P[i];
+        }
+        pt[mP] = vec2(Pscrn[0], Pscrn[1]);
+        if ( moveAccordingly == 1 ) {
+            if ( mP == 0 ) {
+                pt[1] = pt[0] + (PT2[1] - PT2[0]);
+            }
+            else if ( mP == 1 ) {
+                pt[1] = pt[0] + (PT[3] - PT[2]);
+            }
+            else if ( mP == 2 ) {
+                pt[2] = pt[3] - (PT2[1] - PT2[0]);                
+            }
+            else if ( mP == 3 ) {
+                pt[2] = pt[3] + (PT[2] - PT[3]);
+            }
+        }
+    
+        int r;
+        vec2 b0 = pt[1] - pt[0];
+        vec2 b1 = pt[2] - pt[1];
+        vec2 b2 = pt[3] - pt[2];
+        float c01 = determinant(mat2x2(b0,b1));
+        float c02 = determinant(mat2x2(b0,b2));
+        float c12 = determinant(mat2x2(b1,b2));
+        float g00 = dot(b0, b0);
+        float g01 = dot(b0, b1);
+        float g11 = dot(b1, b1);
+        float g02 = dot(b0, b2);
+        float g12 = dot(b1, b2);
+        float g22 = dot(b2, b2);
+        float xi[6];
+        xi[0] = 162.0f * (c02 * g00 + 4.0f * c01 * g00 - 6.0f * c01 * g01);
+        xi[1] = (162.0f/5.0f) * ( 5.0f * c02 * g00 + 10.0f * c01 * g01 - 12.0f * c01 * g11
+                                         + 2.0f * c12 * g00 - 2.0f * c02 * g01 - 6.0f * c01 * g02);
+        xi[2] = (162.0f/5.0f) * (2.0f * c01 * g11 + 3.0f * c12 * g00 + 7.0f * c02 * g01 + c01 * g02
+                                   -4.0f * c02 * g11 - 2.0f * c02 * g02 + c12 * g01 - 9.0f * c01 * g12);
+        xi[3] = (162.0f/5.0f) * (9.0f * c12 * g01 - c12 * g02 -7.0f * c02 * g12 - c01 * g12
+                                   + 2.0f * c02 * g02 + 4.0f * c02 * g11 - 3.0f * c01 * g22 - 2.0f * c12 * g11);
+        xi[4] = (162.0f/5.0f) * (6.0f * c12 * g02 + 2.0f * c02 * g12 - 2.0f * c01 * g22
+                                   + 12.0f * c12 * g11 - 5.0f * c02 * g22 - 10.0f * c12 * g12);
+        xi[5] = 162.0f * (-4.0f * c12 * g22 - c02 * g22 + 6.0f * c12 * g12);
+    
+        r = LambdaTstack(xi);
+        return r;
+    }
+    
+    void main(void)
+    {
+        const vec4 cr1 = vec4(0.4, 0.1, 0.1, 0.);
+        const vec4 cg1 = vec4(0.1, 0.4, 0.1, 0.);
+        if( movingPT != -1 ) {
+            int r0 = ccm(PT2, 0, 1);
+            int r1 = ccm(PT2, 1, 0);
+            int r2 = ccm(PT, 2, 0);
+            int r3 = ccm(PT, 3, 1);
+            vec4 col = vec4(1.,1.,1.,1.);
+
+            if(endRegP == 0) {
+                if ( movingPT == 0 ) {
+                    if ( r0 != 0 ) col -= cr1;
+                    if ( r3 != 0 ) col -= cg1;
+                }
+                else {
+                    if ( r1 != 0 ) col -= cr1;
+                    if ( r2 != 0 ) col -= cg1;                   
+                }
+            }
+            else if(endRegP == 1) {
+                if ( movingPT == 0 && r0 != 0 ) col -= cg1; 
+                else if ( movingPT == 1 && r1 != 0 ) col -= cg1;
+            }
+            else if(endRegP == 2) {
+                if ( movingPT == 2 && r2 != 0 ) col -= cr1;
+                else if ( movingPT == 3 && r3 != 0 ) col -= cr1;
+            }
+            fragment = col;
+        }
+        else fragment = vec4(1, 1, 1, 1);
+    }   
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
+<script src="glProgram.js"></script>
+<script src="bezier.js"></script>
+<script src="jsBezierMain.js"> </script>
+<BR>
+Click then drag to draw a curve. <BR>
+Press ENTER or cntrl+click to end the curve.<BR>
+Drag to move a control ponit with its two associated points.<BR>
+Press Alt (or Option for Mac) and move a control point to make the curve G^0.<BR>
+Select a control point and press Delete to delete three consecutive points.  Click again to deselect.<BR>
+Use arrow keys to translate and +/- to scale.<BR>
+The purple region indicates that that the curvature will be monotonically varying for the left(previous) curve.<BR>
+The cyan region indicates the region for the right(next) curve.<BR>
+</body>
+</html>
