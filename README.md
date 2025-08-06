@@ -6,7 +6,7 @@
 - The code uses polynomial cubic Bézier curves.
 - For the visualization of the curuvature monotonicity region, a GPU is required.
   
-# How to use
+# Usage
 
 - Open jsBezier.html.
 - Click and drag to draw a curve.
@@ -20,6 +20,9 @@
 <img src="Figs/TwoPoints.png" alt="TwoPoints.png" width="400">
 - If the control point connecting the two curve segments is within both the purple and cyan regions, the curvatures of the two curves connected by that control point are both monotonically varying.
 <img src="Figs/ConnectingPoint.png" alt="ConnectingPoint.png" width="400">
+- When no control point is selected, clicking a point begins to draw a new curve.
+
+# Notes
 - If one of the control point is within its corresponding curvature monotonicity region, all the other control poijnts are also within their curvature monotonicity regions.
 - For cubic Bézier curves, if the distance between the first two or the last two control points is small, the curvature becomes very large.
 
