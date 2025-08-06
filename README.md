@@ -1,17 +1,19 @@
 # CurveToolWithCMRegion
 
-This repository contains prototype code for a curve tool with visualizing the curvature monotonicity region.
+- This repository contains prototype code for a curve tool, like a curve tool in Adobe Illustrator, but with visualzing the curvatrure monotonicity region.
+- It uses a GPU to visualize the curvature monotonicity region.
 
 # How to use
 
-- Click then drag to draw a curve. <BR>
-- Press ENTER or cntrl+click to end the curve.
-- Drag to move a control ponit with its two associated points.
+- Click and drag to draw a curve.
+- Press ENTER or Ctrl+click to end the curve.
+- Drag a control point to move it and its two associated points.
 - Press Alt (or Option for Mac) and move a control point to make the curve G^0.
 - Select a control point and press Delete to delete three consecutive points. Click again to deselect.
-Use arrow keys to translate and +/- to scale.
-The purple region indicates that that the curvature will be monotonically varying for the left(previous) curve.
-The cyan region indicates the region for the right(next) curve.
+- Use the arrow keys to translate and +/- to scale.
+- The purple region indicates that the curvature of the left (previous) curve will be monotonically varying if the corresponding control point is within the region.
+- The cyan region indicates that the curvature of the right (next) curve will be monotonically varying if the corresponding control point is within the region.
+- If the control point connecting the two curve segments is within both the purple and cyan regions, the curvatures of the two curves connected by that control point are both monotonically varying.
 
 Try the online demo ********
 
