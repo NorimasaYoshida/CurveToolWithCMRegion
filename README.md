@@ -1,11 +1,23 @@
 # CurveToolWithCMRegion
-Cubic Bezier curve tool with curvature monotonocity regions
 
-This repository contains prototype code for a curve tool 
+This repository contains prototype code for a curve tool with visualizing the curvature monotonicity region.
+
+# How to use
+
+- Click then drag to draw a curve. <BR>
+- Press ENTER or cntrl+click to end the curve.
+- Drag to move a control ponit with its two associated points.
+- Press Alt (or Option for Mac) and move a control point to make the curve G^0.
+- Select a control point and press Delete to delete three consecutive points. Click again to deselect.
+Use arrow keys to translate and +/- to scale.
+The purple region indicates that that the curvature will be monotonically varying for the left(previous) curve.
+The cyan region indicates the region for the right(next) curve.
+
+Try the online demo ********
 
 
 # Licence
-The code in this repository i licenced under ther terms of Apache-2 license.
+The code in this repository is licenced under ther terms of Apache-2 license.
 
 # Contributions
 Contributioons are welcome.
