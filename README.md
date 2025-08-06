@@ -18,8 +18,7 @@
 - If the control point connecting the two curve segments is within both the purple and cyan regions, the curvatures of the two curves connected by that control point are both monotonically varying.
 <img src="Figs/ConnectingPoint.png" alt="ConnectingPoint.png" width="400">
 
-Try the online demo ********
-
+Try the [online demo](jsBezier.html).
 
 # Licence
 The code in this repository is licenced under ther terms of Apache-2 license.
