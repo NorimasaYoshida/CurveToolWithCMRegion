@@ -1,6 +1,7 @@
 # CurveToolWithCMRegion
 
-- This repository contains prototype code for a curve tool, like a curve tool in Adobe Illustrator, but with visualzing the curvatrure monotonicity region.
+- This repository contains prototype code for a curve tool, similar to the one in Adobe Illustrator, but with a visualization of the curvature monotonicity region.
+- An original curve tool with the visualization of the curvature monotonicity region was proposed in [2], and I have ported that program to JavaScript.
 - It uses a GPU to visualize the curvature monotonicity region.
 
 # How to use
@@ -13,6 +14,7 @@
 - Use the arrow keys to translate and +/- to scale.
 - The purple region indicates that the curvature of the left (previous) curve will be monotonically varying if the corresponding control point is within the region.
 - The cyan region indicates that the curvature of the right (next) curve will be monotonically varying if the corresponding control point is within the region.
+![TwoPoint](CurveToolWithCMRegion/TwoPoints.png)
 - If the control point connecting the two curve segments is within both the purple and cyan regions, the curvatures of the two curves connected by that control point are both monotonically varying.
 
 Try the online demo ********
