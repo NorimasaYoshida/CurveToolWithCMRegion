@@ -31,7 +31,7 @@
 The code in this repository is licenced under ther terms of Apache-2 license.
 
 # Contributions
-Contributioons are welcome.
+Contributions are welcome.
 
 # References
 [1] Takafumi Saito and Norimasa Yoshida, Curvature monotonicity evaluation functions on rational Bézier curves. Computers & Graphics, Vol. 114, pp.219-229, Aug. 2023. [https://doi.org/10.1016/j.cag.2023.05.019](https://doi.org/10.1016/j.cag.2023.05.019)
