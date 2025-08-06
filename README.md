@@ -6,6 +6,7 @@
 
 # How to use
 
+- Open jsBezier.html.
 - Click and drag to draw a curve.
 - Press ENTER or Ctrl+click to end the curve.
 - Drag a control point to move it and its two associated points.
