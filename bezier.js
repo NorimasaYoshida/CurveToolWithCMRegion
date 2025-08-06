@@ -149,11 +149,7 @@ class CurveSG {
         let cy = pt.y + combScale * kappa * normY;
         return ({x: cx, y: cy});
     }
-    DrawCurve() {
-        let modelviewMatrix = mat4.create();
-        let projectionMatrix = mat4.create();
-        mat4.ortho(projectionMatrix, lxWin, rxWin, byWin, tyWin, -1, 1);
-
+    DrawCMRegion() {
         let idx = curveSG.indexOf(this);
         if ( showCMRegion && idx == currentCurveSG && (selectedPt != -1 || (generatingPt % 3) == 2)) {
             let slctdPt = ((generatingPt % 3) == 2 ? generatingPt - 2 : selectedPt);
@@ -236,8 +232,9 @@ class CurveSG {
                 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
             }
         }
-
-
+    }
+    DrawCurve() {
+        let idx = curveSG.indexOf(this);
 
         gl.useProgram(glProgramInfo.program);
         gl.uniformMatrix4fv(glProgramInfo.uniformLocations.modelview, false, modelviewMatrix);

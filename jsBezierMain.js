@@ -2,7 +2,6 @@
 
 const canvas = document.getElementById("glCanvas");
 
-//const gl = canvas.getContext('webgl2');
 const gl = canvas.getContext('webgl2') || canvas.getContext('experimental-webgl');
 if (!gl)
    throw new Error("WebGL not supported!");
@@ -36,6 +35,18 @@ let showComb = (combCheckBox.checked ? 1 : 0);
 let combScale = parseFloat(inputCombScale.value);;
 
 let glProgram = GenerateShaders("#vertex-shader", "#fragment-shader"); 
+let modelviewMatrix;
+let projectionMatrix;
+
+let winScale = 1.0;
+let offsetX = 0.;
+let offsetY = 0.;
+let lxWin = -1. / winScale - offsetX;
+let rxWin = 1. / winScale - offsetX;
+let tyWin = 1. / winScale - offsetY;
+let byWin = -1. / winScale - offsetY;
+
+
 const glProgramInfo = {
     program: glProgram,
     attribLocations: {
@@ -80,16 +91,20 @@ initEventHandlers();
 
 DrawEverything();
 
-// console.log(curveSG);
-
 
  function DrawEverything() {
     gl.viewport(0, 0, canvas.width, canvas.height);
+    modelviewMatrix = mat4.create();
+    projectionMatrix = mat4.create();
+    mat4.ortho(projectionMatrix, lxWin, rxWin, byWin, tyWin, -1, 1);
 
     let cl = 1.; //(showCMRegion == 1 ? 0.98 : 0.95);
     gl.clearColor(cl, cl, cl, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
+    if ( currentCurveSG != -1 ) {
+        curveSG[currentCurveSG].DrawCMRegion();
+    }
     for(let i = 0; i < curveSG.length; i++) {
         curveSG[i].DrawCurve();
     }
@@ -105,13 +120,6 @@ function EndCurve() {
     currentCurveSG = -1;
 }
 
-let winScale = 1.0;
-let offsetX = 0.;
-let offsetY = 0.;
-let lxWin = -1. / winScale - offsetX;
-let rxWin = 1. / winScale - offsetX;
-let tyWin = 1. / winScale - offsetY;
-let byWin = -1. / winScale - offsetY;
 
 function initEventHandlers() {
   
