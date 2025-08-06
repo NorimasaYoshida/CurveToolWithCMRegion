@@ -25,6 +25,7 @@
 # Notes
 - If one of the control point is within its corresponding curvature monotonicity region, all the other control poijnts are also within their curvature monotonicity regions.
 - For cubic Bézier curves, if the distance between the first two or the last two control points is small, the curvature becomes very large.
+- In the fragment shader, we intentionally did not used CMEF[1] because it is simpler for polynomial cubic Bézier curves. 
 
 # Licence
 The code in this repository is licenced under ther terms of Apache-2 license.
