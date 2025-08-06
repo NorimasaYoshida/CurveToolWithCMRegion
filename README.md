@@ -1,4 +1,4 @@
-# Curve Tool with the visualization of curvature monotonicity regions
+# A Curve Tool that Visualizes Curvature Monotonicity Regions
 
 - This repository contains prototype code for a curve tool, similar to the one in Adobe Illustrator, but with a visualization of the curvature monotonicity region.
 - An original curve tool with the visualization of the curvature monotonicity region was proposed in [2], and I have ported that program to JavaScript.
