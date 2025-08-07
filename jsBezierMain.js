@@ -123,6 +123,33 @@ function EndCurve() {
 
 function initEventHandlers() {
   
+    document.getElementById('LoadFile').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const jsonString = e.target.result;
+            curveData = JSON.parse(jsonString);
+            ClearParameters();
+            for(let i = 0; i < curveData.length; i++) {
+                curveSG.push(new CurveSG);
+                for(let j = 0; j < curveData[i].pt.length; j++) {
+                    let mx = curveData[i].pt[j].x;
+                    let my = curveData[i].pt[j].y;
+                    let g1flg = curveData[i].g1flag[j];
+                    curveSG[i].AddPoint2(({x: mx, y: my}), g1flg);
+                }
+                console.log('read');
+            }
+            DrawEverything();
+            console.log(curveSG.length);
+            event.target.value = '';    // for reading the same file again
+        };
+        reader.readAsText(file);
+    });
+
     inputCombScale.addEventListener('change', () => {
         combScale = parseFloat(inputCombScale.value);
         DrawEverything();
@@ -334,14 +361,17 @@ function ResizeWindow() {
     DrawEverything();
 }
 
-
-function ClearButton() {
-    if (confirm("Clear all points?")) {
+function ClearParameters() {
         curveSG.length = 0;
         currentCurveSG = -1;
         generatingPt = -1;
         selectedPt = -1;
         selectedPtMoving = false;
+}
+
+function ClearButton() {
+    if (confirm("Clear all points?")) {
+        ClearParameters();
         SetToDefaultView();
         DrawEverything();
     }
@@ -367,26 +397,21 @@ function DefaultViewButton() {
 }
 
 
-function SaveUserFile() {
-    const jsonData = JSON.stringify(curveSG, null, curveSG.length);
-    console.log(jsonData);
-    const filename = document.getElementById('filename').value || 'bezier_data.json';
-    const blob = new Blob([jsonData], { type: 'application/json' });
+function SaveButton() {
+    const jsonString = JSON.stringify(curveSG);
+    console.log(jsonString);
+
+    const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement('a');
     a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
+    a.download = 'curveData.json';
     a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
 
+    URL.revokeObjectURL(url);
 }
 
-function LoadUserFile() {
-    const filename = document.getElementById('filename').value || 'bezier_data.json';
-    // const data = require(filename);
-    // console.log(data);
-    // const jsonData = JSON.parse(data);
-    // console.log(jsonData);
+function LoadButtion() {
+
 }

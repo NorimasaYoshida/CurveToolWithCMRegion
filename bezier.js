@@ -3,8 +3,8 @@
 class CurveSG {
     constructor() {
         this.pt = [];
-        this.g1flag = [];   // 1 if G^1 continuous. Used only for connecting points.  5, 8, 11, etc.
-        generatingPt = -1;    // when generating, 1, 4, 7, ...
+        this.g1flag = [];   // 1 if G^1 continuous, othersise 0. Used only for connecting points.  5, 8, 11, etc.
+        generatingPt = -1;    // when a curve is generated, 1, 4, 7, ... Otherwise -1.
         selectedPt = -1;
     }
     ClearPt() {
@@ -15,6 +15,10 @@ class CurveSG {
     AddPoint(v) {
         this.pt.push(v);
         this.g1flag.push(1);
+    }
+    AddPoint2(v, g1flg) {
+        this.pt.push(v);
+        this.g1flag.push(g1flg);
     }
     FindPt(mx, my) {
         let diff = 10.0 / canvas.width * 2;
@@ -280,13 +284,11 @@ class CurveSG {
         const curvePointNum = 200;
         gl.uniform4f(glProgramInfo.uniformLocations.fcolor, 0.0, 0.0, 0.0, 1);
         if ( this.pt.length > 5 ) {
-            // const bez = new Bezier();
             let cNum = (this.pt.length - 3) / 3;
             let curvePt = [];
             let combPt = [];
             for(let i = 0; i < cNum; i++) {
                     let j = i * 3+1;
-                    // curvePt.length = 0;
                     for(let k = 0; k < curvePointNum; k++) {
                         let t = 1.0 / (curvePointNum - 1) * k;
                         let crvPt = this.ComputeCubicBezier(t, j);
@@ -302,6 +304,8 @@ class CurveSG {
             gl.vertexAttribPointer(glProgramInfo.attribLocations.glPos, 2, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(glProgramInfo.attribLocations.glPos);
             gl.drawArrays(gl.LINE_STRIP, 0, curvePt.length);
+
+            // Draw the curvature comb
             if ( showComb ) {
                 gl.uniform4f(glProgramInfo.uniformLocations.fcolor, 0.7, 0.7, 0.7, 1); 
                 let combPtFloat32Array = this.ConvertToFloat32Array(combPt);

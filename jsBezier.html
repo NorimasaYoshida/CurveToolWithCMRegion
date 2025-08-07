@@ -7,16 +7,20 @@
     <H2>Bezier curve tool with curvature monotonicity regions</H2>
     <button onclick="ClearButton()">Clear</button>
     <button onclick="DefaultViewButton()">Default view</button>
+    <button onclick="SaveButton()">Save</button>
+    <label for=~"LoadFile">Load</label>
+    <input type="file" id="LoadFile" accept=".json">
+    <BR>
     <input type="checkbox" id="ControlPolygonCheckBox" checked>
     <label for="ControlPolygonCheckBox">ControlPolygon</label>
     <input type="checkbox" id="CMRegionCheckBox" checked>
     <label for="CMRegionCheckBox">C.M.Region</label>
-    <BR>
-    <input type="number" id="windowSize" placeholder="windowSize" value="600">
-    <button onclick="ResizeWindow()">Resize</button>
     <input type="checkbox" id="CombCheckBox">
     <label for="CombCheckBox">Comb</label>
     <input type ="number" id="combScale" step="0.01" placeholder="combScale", value="0.05">
+    <BR>
+    <input type="number" id="windowSize" placeholder="windowSize" value="600">
+    <button onclick="ResizeWindow()">Resize</button>
     <BR>
     <BR>
     <canvas id="glCanvas" width="600" height="600"></canvas>
