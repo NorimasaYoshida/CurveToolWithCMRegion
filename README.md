@@ -3,6 +3,7 @@
 - This repository contains prototype code for a curve tool similar to Adobe Illustrator, but it includes a visualization of the curvature monotonicity region.
 - When a control point is placed within its corresponding region, the curvature of the curve will vary monotonically.
 - The code uses polynomial cubic Bézier curves and requires a GPU to visualize the curvature monotonicity regions.
+ <img src="Figs/demo.mp4" alt="TwoPoints.png" width="400">
  <img src="Figs/fishOutline.png" alt="TwoPoints.png" width="400">
   
 # Usage
