@@ -23,7 +23,7 @@
 
 <img src="Figs/ConnectingPoint.png" alt="ConnectingPoint.png" width="400">
 
-- When no control point is selected, clicking a point begins to draw a new curve.
+- When no control point is selected, clicking any point in the window will begin a new curve.
 
 # Notes
 - If one of the control point is within its corresponding curvature monotonicity region, all the other control poijnts are also within their curvature monotonicity regions.
