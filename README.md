@@ -5,6 +5,7 @@
 - Refer to [1,2,3] for detail.
 - The code uses polynomial cubic Bézier curves.
 - For the visualization of the curuvature monotonicity region, a GPU is required.
+ <img src="Figs/fishOutline.png" alt="TwoPoints.png" width="400">
   
 # Usage
 
