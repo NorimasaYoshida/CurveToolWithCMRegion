@@ -9,7 +9,7 @@
   
 # Usage
 
-- Open jsBezier.html.
+- Open jsBezier.html or try the [online demo](https://norimasayoshida.github.io/CurveToolWithCMRegion/jsBezier.html).
 - Click and drag to draw a curve.
 - Press ENTER or Ctrl+click to end the curve.
 - Drag a control point to move it and its two associated points.
