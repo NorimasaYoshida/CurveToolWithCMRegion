@@ -1,10 +1,8 @@
 # A Curve Tool that Visualizes Curvature Monotonicity Regions
 
-- This repository contains prototype code for a curve tool, similar to the one in Adobe Illustrator, but with a visualization of the curvature monotonicity region.
-- An original curve tool with the visualization of the curvature monotonicity region was proposed in [2], and I have ported that program to JavaScript.
-- Refer to [1,2,3] for detail.
-- The code uses polynomial cubic Bézier curves.
-- For the visualization of the curuvature monotonicity region, a GPU is required.
+- This repository contains prototype code for a curve tool similar to Adobe Illustrator, but it includes a visualization of the curvature monotonicity region.
+- When a control point is placed within its corresponding region, the curvature of the curve will vary monotonically.
+- The code uses polynomial cubic Bézier curves and requires a GPU to visualize the curvature monotonicity regions.
  <img src="Figs/fishOutline.png" alt="TwoPoints.png" width="400">
   
 # Usage
@@ -26,7 +24,8 @@
 # Notes
 - If one of the control point is within its corresponding curvature monotonicity region, all the other control poijnts are also within their curvature monotonicity regions.
 - For cubic Bézier curves, if the distance between the first two or the last two control points is small, the curvature becomes large at the corresponding endpoint.
-- In the fragment shader, we intentionally did not use CMEF[1] because the fragment code size is smaller for polynomial cubic Bézier curves. 
+- In the fragment shader, we intentionally did not use the CMEF because the fragment code size is smaller for polynomial cubic Bézier curves. For higher-degree curves or rational curves, CMEFs should be used.
+- Refer to [1,2,3] for detail.
 
 # Licence
 The code in this repository is licenced under ther terms of Apache-2 license.
