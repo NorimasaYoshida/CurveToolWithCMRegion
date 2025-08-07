@@ -4,8 +4,8 @@
 - When a control point is placed within its corresponding region, the curvature of the curve will vary monotonically.
 - The code uses polynomial cubic Bézier curves and requires a GPU to visualize the curvature monotonicity regions.
   
- <img src="Figs/demo.gif" alt="demo" width="400"></img>
- <img src="Figs/fishOutline.png" alt="fishOutline.png" width="400"></img>
+ <img src="Figs/demo.gif" alt="demo" width="400">
+ <img src="Figs/fishOutline.png" alt="fishOutline.png" width="400">
   
 # Usage
 
@@ -19,11 +19,11 @@
 - The purple region indicates that the curvature of the left (previous) curve will be monotonically varying if the corresponding control point is within the region.
 - The cyan region indicates that the curvature of the right (next) curve will be monotonically varying if the corresponding control point is within the region.
 
-<img src="Figs/TwoPoints.png" alt="TwoPoints.png" width="400"></img>
+<img src="Figs/TwoPoints.png" alt="TwoPoints.png" width="400">
 
 - If the control point connecting the two curve segments is within both the purple and cyan regions, the curvatures of the two curves connected by that control point are both monotonically varying.
 
-<img src="Figs/ConnectingPoint.png" alt="ConnectingPoint.png" width="400"></img>
+<img src="Figs/ConnectingPoint.png" alt="ConnectingPoint.png" width="400">
 
 - When no control point is selected, clicking any point in the window will begin a new curve.
 
