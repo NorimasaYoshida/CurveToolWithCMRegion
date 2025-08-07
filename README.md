@@ -1,7 +1,8 @@
 # A Curve Tool that Visualizes Curvature Monotonicity Regions
 
 - This repository contains prototype code for a curve tool similar to Adobe Illustrator, but it includes a visualization of the curvature monotonicity region.
-- When a control point is placed within its corresponding region, the curvature of the curve will vary monotonically.
+- A curvature monotonicity region is a region in the plane of the control points of a curve.
+- If a control point is placed within its curvature monotonicity region, the resulting curve will have monotonically varying curvature.
 - The code uses polynomial cubic Bézier curves and requires a GPU to visualize the curvature monotonicity regions.
   
  <img src="Figs/demo.gif" alt="demo" width="400">
