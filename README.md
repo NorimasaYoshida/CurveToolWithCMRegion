@@ -16,7 +16,7 @@
 - Use the arrow keys to translate and +/- to scale.
 - The purple region indicates that the curvature of the left (previous) curve will be monotonically varying if the corresponding control point is within the region.
 - The cyan region indicates that the curvature of the right (next) curve will be monotonically varying if the corresponding control point is within the region.
-<img src="Figs/TwoPoints.png" alt="TwoPoints.png" width="400">
+<img src="Figs/TwoPoints.png" alt="TwoPoints.png" width="400"><BR>
 - If the control point connecting the two curve segments is within both the purple and cyan regions, the curvatures of the two curves connected by that control point are both monotonically varying.
 <img src="Figs/ConnectingPoint.png" alt="ConnectingPoint.png" width="400">
 - When no control point is selected, clicking a point begins to draw a new curve.
